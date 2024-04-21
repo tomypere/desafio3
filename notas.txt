@@ -1,0 +1,9 @@
+git init
+git add .
+git commit -m "lo que quieras"
+git branch -M main
+git push
+
+
+
+npm run dev    //prender servidor
