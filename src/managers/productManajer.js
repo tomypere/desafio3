@@ -1,13 +1,12 @@
 import fs from "fs";
-import path from "path";
 
 let products = [];
-/* let pathFile = "../fs/files/products.json" */
-let pathFile = "../desafio/data/fs/files/products.json"
+let pathFile = "../src/data/fs/files/products.json"
 
 
-const addProduct = async (title, description, price, thumbnail, code, stock) => {
-
+const addProduct = async (product) => {
+    const {title, description, price, thumbnail, code, stock} = product;
+    await getProducts();
     const newProduct = {
         id: products.length + 1,
         title,
@@ -15,7 +14,8 @@ const addProduct = async (title, description, price, thumbnail, code, stock) => 
         price,
         thumbnail,
         code,
-        stock
+        stock,
+        status: true
     }
 
     if(Object.values(newProduct).includes(undefined)){
@@ -34,13 +34,16 @@ const addProduct = async (title, description, price, thumbnail, code, stock) => 
     await fs.promises.writeFile(pathFile, JSON.stringify(products));
 }
 
-const getProducts = async () => {
+const getProducts = async (limit) => {
 
     console.log(pathFile)
     const productsJson =  await fs.promises.readFile(pathFile, "utf8")
     products = JSON.parse(productsJson) || [];
 
-    return products;
+    if(!limit) return products
+
+
+    return products.slice(0, limit);
 }
 
 const getProductById = async (id) => {
@@ -75,23 +78,5 @@ const deleteProduct = async (id) => {
     await fs.promises.writeFile(pathFile, JSON.stringify(products))
 }
 
-//Test
 
-/* addProduct("Producto 1", "el primer producto", 299, "http://www.google.com", "ADF123", 10);
-addProduct("Producto 2", "el segundo producto", 899, "http://www.google.com", "ADF124", 10);
-addProduct("Producto 3", "el tercer producto", 899, "http://www.google.com", "ADF124", 10);
-addProduct("Producto 4", "el cuarto producto", 899, "http://www.google.com", "ADF125", 10);
-addProduct("Producto 5", "el quinto producto", 899, "http://www.google.com", "ADF126"); */
-
-//getProducts();
-
-//getProductById(2)
-
-/* updateProduct(3, {
-    "title": "Producto 3",
-    "description": "el tercer producto"
-}); */
-
-/* deleteProduct(2) */
-
-export { addProduct, getProducts, getProductById, updateProduct, deleteProduct }
+export default { addProduct, getProducts, getProductById, updateProduct, deleteProduct }
