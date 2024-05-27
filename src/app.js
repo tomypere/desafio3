@@ -1,5 +1,8 @@
 import express from "express";
 import router from "../routes/index.js"
+import { connectMongoDB  } from "../config/mongoDb.config.js";
+
+connectMongoDB()
 
 const app = express()
 
@@ -10,6 +13,6 @@ app.use("/api", router)
 
 
 
-app.listen(8080, () => {
+app.listen(8081, () => {
     console.log("Escuchando el servidor en el puerto 8080")
 })
